@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import entities.Person;
 import utils.EMF_Creator;
 import facades.PersonFacade;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -58,6 +60,14 @@ public class PersonResource {
     public String demo() {
         return "{\"msg\":\"Hello World\"}";
     }
+    
+    @GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)   
+    public Person getPersonById(@PathParam("id") int id) {
+         return new Person("Jon Snow","Winterfell");
+    }
+    
     @Path("count")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
