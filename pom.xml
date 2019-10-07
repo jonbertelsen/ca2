@@ -7,14 +7,14 @@
     <version>1.0.1</version>
     <packaging>war</packaging>
 
-    <name>startcodeOas</name>
+    <name>ca2</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
         <!-- TODO: Add the URL to your own tomcat server. Used to deploy your WAR-file -->
-        <remote.server>http://157.230.21.103/manager/text</remote.server>
+        <remote.server>https://cba.scenius.dk/manager/text</remote.server>
         
     </properties>
     
