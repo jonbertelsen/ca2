@@ -5,7 +5,6 @@
  */
 package dto;
 
-import entities.Hobby;
 import entities.Phone;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,8 @@ import java.util.List;
  * @author jobe
  */
 public class PhonesDTO {
-        private List<PhoneDTO> all = new ArrayList();
+    
+    private List<PhoneDTO> all = new ArrayList<>();
 
     public PhonesDTO(List<Phone> phones) {
         phones.forEach((p) -> {

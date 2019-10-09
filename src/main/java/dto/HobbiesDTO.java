@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class HobbiesDTO {
     
-    private List<HobbyDTO> all = new ArrayList();
+    private List<HobbyDTO> all = new ArrayList<>();
 
     public HobbiesDTO(List<Hobby> hobbies) {
         hobbies.forEach((h) -> {

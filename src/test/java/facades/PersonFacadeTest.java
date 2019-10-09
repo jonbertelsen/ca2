@@ -21,32 +21,16 @@ public class PersonFacadeTest {
 
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
-    private static Person p1, p2;
+    private static Person p1, p2, p3;
 
     public PersonFacadeTest() {
     }
 
-    //@BeforeAll
-    public static void setUpClass() {
-        emf = EMF_Creator.createEntityManagerFactory(
-                "pu",
-                "jdbc:mysql://localhost:3307/startcode_test",
-                "dev",
-                "ax2",
-                EMF_Creator.Strategy.CREATE);
-        facade = PersonFacade.getFacadeExample(emf);
-    }
-
-    /*   **** HINT **** 
-        A better way to handle configuration values, compared to the UNUSED example above, is to store those values
-        ONE COMMON place accessible from anywhere.
-        The file config.properties and the corresponding helper class utils.Settings is added just to do that. 
-        See below for how to use these files. This is our RECOMENDED strategy
-     */
+    
     @BeforeAll
-    public static void setUpClassV2() {
-       emf = EMF_Creator.createEntityManagerFactory(DbSelector.TEST,Strategy.DROP_AND_CREATE);
-       facade = PersonFacade.getFacadeExample(emf);
+    public static void setUpClass() {
+       emf = EMF_Creator.createEntityManagerFactory(DbSelector.TEST, Strategy.DROP_AND_CREATE);
+       facade = PersonFacade.getFacade(emf);
     }
 
     @AfterAll
@@ -61,10 +45,13 @@ public class PersonFacadeTest {
         EntityManager em = emf.createEntityManager();
         CityInfo cityInfo = new CityInfo(2100, "Winterfell");
         CityInfo cityInfo2 = new CityInfo(3434, "Kings Landing");
+        CityInfo cityInfo3 = new CityInfo(9898, "Qarth");
         Address address = new Address("Dirty row", "General bad ass", cityInfo);
         Address address2 = new Address("Castle Street", "One arm dude", cityInfo2);
+        Address address3 = new Address("Essos", "Mother of Dragons", cityInfo3);
         p1 = new Person("jonsnow@got.com", "Jon", "Snow", address);
         p2 = new Person("jamiel@got.com","Jamie", "Lannister", address2);
+        p3 = new Person("dragonmother@got.com", "Daenerys", "Targaryen", address3);
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
@@ -72,6 +59,7 @@ public class PersonFacadeTest {
             em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
             em.persist(p1);
             em.persist(p2); 
+            em.persist(p3);
             em.getTransaction().commit();
         } finally { 
             em.close();
@@ -86,7 +74,7 @@ public class PersonFacadeTest {
     // TODO: Delete or change this method 
     @Test
     public void testAFacadeMethod() {
-        assertEquals(2, facade.getPersonCount(), "Expects two rows in the database");
+        assertEquals(3, facade.getPersonCount(), "Expects 3 rows in the database");
     }
 
 }

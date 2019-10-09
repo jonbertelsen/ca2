@@ -23,8 +23,8 @@ public class PersonDTO {
     private String firstName;
     private String lastName;
     private AddressDTO address;
-    private List<PhoneDTO> phoneList = new ArrayList();
-    private List<HobbyDTO> hobbies = new ArrayList();
+    private List<PhoneDTO> phoneList = new ArrayList<>();
+    private List<HobbyDTO> hobbies = new ArrayList<>();
     
     public PersonDTO(Person person){
         this.id = person.getId();

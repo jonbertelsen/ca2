@@ -30,10 +30,10 @@ public class Person implements Serializable {
     private Address address;
     
     @OneToMany(mappedBy="person", cascade = { CascadeType.PERSIST }) // Non owning side
-    private List<Phone> phoneList;
+    private List<Phone> phoneList = new ArrayList<>();
     
     @ManyToMany(mappedBy="persons", cascade = { CascadeType.PERSIST }) // Non Owning side
-    private List<Hobby> hobbies;
+    private List<Hobby> hobbies = new ArrayList<>();
     
     public Person() {
     }
@@ -43,8 +43,6 @@ public class Person implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
-        this.phoneList = new ArrayList<Phone>();
-        this.hobbies = new ArrayList<Hobby>();
     }
     
     public Long getId() {

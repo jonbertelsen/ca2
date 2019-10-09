@@ -33,7 +33,7 @@ public class CityInfo implements Serializable {
     
     
     @OneToMany(mappedBy="cityInfo", cascade = { CascadeType.PERSIST })
-    private List<Address> addressList = new ArrayList();
+    private List<Address> addressList = new ArrayList<>();
     
 
     public CityInfo() {

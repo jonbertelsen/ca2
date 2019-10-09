@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -31,7 +32,7 @@ public class Hobby implements Serializable {
     
     @ManyToMany(cascade = { CascadeType.PERSIST })
     @JoinTable(name="PERSON_HOBBY") // Owning side
-    private List<Person> persons;
+    private List<Person> persons = new ArrayList<>();
 
     public Long getId() {
         return id;

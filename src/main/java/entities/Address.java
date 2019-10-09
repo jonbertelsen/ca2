@@ -36,7 +36,7 @@ public class Address implements Serializable {
     private CityInfo cityInfo;
 
     @OneToMany (mappedBy="address", cascade = { CascadeType.PERSIST }) // Non owning side
-    private List<Person> persons = new ArrayList();
+    private List<Person> persons = new ArrayList<Person>();
     
     public Long getId() {
         return id;
