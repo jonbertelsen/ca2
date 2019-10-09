@@ -6,16 +6,34 @@
 package dto;
 
 import entities.Person;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
  * @author jobe
  */
+@Schema(name = "PersonsDTO")
 public class PersonsDTO {
     
-    private List<PersonDTO> all = new ArrayList<>();
+    @Schema(required = true, example = "{" +
+        "  { \"id\": 1,\"email\": \"jonsnow@got.com\"," +
+        "    \"firstName\": \"Jon\"," +
+         "   \"lastName\": \"Snow\"," +
+         "   \"address\": {" +
+         "     \"id\": 1," +
+         "     \"street\": \"Winterfell\"," +
+         "     \"additionalInfo\": \"General badass\"," +
+         "     \"zipCode\": 2100," +
+         "     \"city\": \"North\"" +
+         "   }," +
+          "  \"phoneList\": []," +
+          "  \"hobbies\": [] } ]) })")
+
+    private Set<PersonDTO> all = new HashSet<>();
 
     public PersonsDTO(List<Person> persons) {
         persons.forEach((p) -> {
@@ -23,7 +41,7 @@ public class PersonsDTO {
         });
     }
 
-    public List<PersonDTO> getAll() {
+    public Set<PersonDTO> getAll() {
         return all;
     }
     

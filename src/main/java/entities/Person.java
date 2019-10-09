@@ -1,8 +1,9 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,10 +31,10 @@ public class Person implements Serializable {
     private Address address;
     
     @OneToMany(mappedBy="person", cascade = { CascadeType.PERSIST }) // Non owning side
-    private List<Phone> phoneList = new ArrayList<>();
+    private Set<Phone> phoneList = new HashSet<>();
     
     @ManyToMany(mappedBy="persons", cascade = { CascadeType.PERSIST }) // Non Owning side
-    private List<Hobby> hobbies = new ArrayList<>();
+    private Set<Hobby> hobbies = new HashSet<>();
     
     public Person() {
     }
@@ -57,11 +58,11 @@ public class Person implements Serializable {
         return address;
     }
 
-    public List<Phone> getPhoneList() {
+    public Set<Phone> getPhoneList() {
         return phoneList;
     }
 
-    public void setPhoneList(List<Phone> phoneList) {
+    public void setPhoneList(Set<Phone> phoneList) {
         this.phoneList = phoneList;
     }
 
@@ -97,22 +98,52 @@ public class Person implements Serializable {
     
     public void addPhone(String number, String description){
         Phone newNumber = new Phone(number, description);
-        if (!phoneList.contains(newNumber)){
-            this.phoneList.add(newNumber);
-            newNumber.setPerson(this);
-        }
+        newNumber.setPerson(this);    
+        this.phoneList.add(newNumber);
+            
     }
 
     public void addHobby(String name, String description){
         Hobby newHobby = new Hobby(name, description);
-        if (!hobbies.contains(newHobby)){
-            this.hobbies.add(newHobby);
-            newHobby.AddPerson(this);
-        }
+        newHobby.AddPerson(this);
+        this.hobbies.add(newHobby);
     }
 
-    public List<Hobby> getHobbies() {
+    public Set<Hobby> getHobbies() {
         return hobbies;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.email);
+        hash = 29 * hash + Objects.hashCode(this.firstName);
+        hash = 29 * hash + Objects.hashCode(this.lastName);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Person other = (Person) obj;
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        if (!Objects.equals(this.firstName, other.firstName)) {
+            return false;
+        }
+        if (!Objects.equals(this.lastName, other.lastName)) {
+            return false;
+        }
+        return true;
     }
    
 }

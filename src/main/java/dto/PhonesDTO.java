@@ -6,24 +6,28 @@
 package dto;
 
 import entities.Phone;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
  * @author jobe
  */
+@Schema(name = "PhonesDTO")
 public class PhonesDTO {
     
-    private List<PhoneDTO> all = new ArrayList<>();
+    private Set<PhoneDTO> all = new HashSet<>();
 
-    public PhonesDTO(List<Phone> phones) {
+    public PhonesDTO(Set<Phone> phones) {
         phones.forEach((p) -> {
             all.add(new PhoneDTO(p));
         });
     }
 
-    public List<PhoneDTO> getAll() {
+    public Set<PhoneDTO> getAll() {
         return all;
     }
 

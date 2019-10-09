@@ -6,11 +6,13 @@
 package dto;
 
 import entities.Phone;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  *
  * @author jobe
  */
+@Schema(name = "PhoneDTO")
 public class PhoneDTO {
     private Long id;
     private String number;

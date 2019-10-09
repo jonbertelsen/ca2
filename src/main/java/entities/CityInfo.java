@@ -7,7 +7,10 @@ package entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,10 +33,39 @@ public class CityInfo implements Serializable {
     private Long id;
     private int zipCode;
     private String city;
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + this.zipCode;
+        hash = 97 * hash + Objects.hashCode(this.city);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CityInfo other = (CityInfo) obj;
+        if (this.zipCode != other.zipCode) {
+            return false;
+        }
+        if (!Objects.equals(this.city, other.city)) {
+            return false;
+        }
+        return true;
+    }
     
     
     @OneToMany(mappedBy="cityInfo", cascade = { CascadeType.PERSIST })
-    private List<Address> addressList = new ArrayList<>();
+    private Set<Address> addressList = new HashSet<>();
     
 
     public CityInfo() {
@@ -69,13 +101,12 @@ public class CityInfo implements Serializable {
         this.id = id;
     }
 
-    public List<Address> getAddressList() {
+    public Set<Address> getAddressList() {
         return addressList;
     }
 
     public void addAddress(Address address) {
-        if (!addressList.contains(address))
-            addressList.add(address);
+        addressList.add(address);
     }
     
 }

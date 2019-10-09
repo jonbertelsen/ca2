@@ -6,18 +6,24 @@
 package dto;
 
 import entities.Address;
-import entities.CityInfo;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  *
  * @author jobe
  */
+@Schema(name = "AddressDTO")
 public class AddressDTO {
     
+    
     private Long id;
+    @Schema(required = true, example = "Storegade 11")
     private String street;
+    @Schema(required = true, example = "Et skummelt sted")
     private String additionalInfo;
+    @Schema(required = true, example = "5600")
     private int zipCode;
+    @Schema(required = true, example = "Rønne")
     private String city;
     
     public AddressDTO(Address address){

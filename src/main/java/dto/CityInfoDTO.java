@@ -6,11 +6,13 @@
 package dto;
 
 import entities.CityInfo;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  *
  * @author jobe
  */
+@Schema(name = "CityInfoDTO")
 public class CityInfoDTO {
     private Long id;
     private int zipCode;

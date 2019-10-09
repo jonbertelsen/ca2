@@ -6,18 +6,21 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author jobe
  */
 @Entity
+@NamedQuery(name = "Phone.deleteAllRows", query = "DELETE from Phone")
 public class Phone implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,7 +31,7 @@ public class Phone implements Serializable {
     private String number;
     private String description;
     
-    @ManyToOne(cascade = { CascadeType.PERSIST }) // Owning side
+    @ManyToOne(cascade = { CascadeType.PERSIST })// Owning side
     private Person person;
 
     public Phone() {
@@ -65,10 +68,14 @@ public class Phone implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 3;
+        hash = 67 * hash + Objects.hashCode(this.number);
+        hash = 67 * hash + Objects.hashCode(this.description);
+        hash = 67 * hash + Objects.hashCode(this.person);
         return hash;
     }
+
+
 
     @Override
     public boolean equals(Object object) {
@@ -95,5 +102,5 @@ public class Phone implements Serializable {
     public void setPerson(Person person) {
         this.person = person;
     }
-    
+      
 }

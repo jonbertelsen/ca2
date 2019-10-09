@@ -3,11 +3,16 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.PersonDTO;
+import dto.PersonsDTO;
 import utils.EMF_Creator;
 import facades.PersonFacade;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.persistence.EntityManagerFactory;
@@ -23,12 +28,12 @@ import javax.ws.rs.core.MediaType;
 @OpenAPIDefinition(
             info = @Info(
                     title = "CA2 ",
-                    version = "0.4",
+                    version = "0.1",
                     description = "Simple API for the CA2",        
                     contact = @Contact( name = "Jon Bertelsen", email = "jobe@cphbusiness.dk")
             ),
           tags = {
-                    @Tag(name = "ca2", description = "API related to CA2")
+                    @Tag(name = "Person", description = "API related to CA2")
               
             },
             servers = {
@@ -58,15 +63,29 @@ public class PersonResource {
     @GET
     @Path("all")
     @Produces({MediaType.APPLICATION_JSON})
+    @Operation(summary = "Get all persons in the system",
+            tags = {"person"},
+            responses = {
+                    @ApiResponse(
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonsDTO.class))),
+                    @ApiResponse(responseCode = "200", description = "Get all persons in system")})
     public String getAllPersons() {
-        return GSON.toJson(FACADE.getAllPersons());
+        PersonsDTO persons = FACADE.getAllPersons();
+        return GSON.toJson(persons);
     }
     
     @GET
     @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)   
-    public PersonDTO getPersonById(@PathParam("id") int id) {
-        return FACADE.addPerson("jonsnow@got.com", "Jon","Snow", "Winterfell", "General badass", 2100, "North");
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Get Person by ID",
+            tags = {"person"},
+            responses = {
+                     @ApiResponse(
+                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonDTO.class))),
+                    @ApiResponse(responseCode = "200", description = "The requested person"),                       
+                    @ApiResponse(responseCode = "400", description = "Person not found")})
+    public String getPersonById(@PathParam("id") int id) {
+        return GSON.toJson(FACADE.addPerson("jonsnow@got.com", "Jon","Snow", "Winterfell", "General badass", 2100, "North"));
     }
     
     @Path("count")

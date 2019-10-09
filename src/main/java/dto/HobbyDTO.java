@@ -6,11 +6,13 @@
 package dto;
 
 import entities.Hobby;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  *
  * @author jobe
  */
+@Schema(name = "HobbyDTO")
 public class HobbyDTO {
     private Long id;
     private String name;

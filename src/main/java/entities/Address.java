@@ -7,7 +7,10 @@ package entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,7 +39,7 @@ public class Address implements Serializable {
     private CityInfo cityInfo;
 
     @OneToMany (mappedBy="address", cascade = { CascadeType.PERSIST }) // Non owning side
-    private List<Person> persons = new ArrayList<Person>();
+    private Set<Person> persons = new HashSet<Person>();
     
     public Long getId() {
         return id;
@@ -77,18 +80,47 @@ public class Address implements Serializable {
 
     public void setCityInfo(CityInfo cityInfo) {
         this.cityInfo = cityInfo;
-   
     }
 
-    public List<Person> getPersons() {
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 53 * hash + Objects.hashCode(this.street);
+        hash = 53 * hash + Objects.hashCode(this.additionalInfo);
+        hash = 53 * hash + Objects.hashCode(this.cityInfo);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Address other = (Address) obj;
+        if (!Objects.equals(this.street, other.street)) {
+            return false;
+        }
+        if (!Objects.equals(this.additionalInfo, other.additionalInfo)) {
+            return false;
+        }
+        if (!Objects.equals(this.cityInfo, other.cityInfo)) {
+            return false;
+        }
+        return true;
+    }
+
+    public Set<Person> getPersons() {
         return persons;
     }
 
     public void addPerson(Person person) {
-        if (!persons.contains(person))
             this.persons.add(person);
     }
 
-  
-    
 }

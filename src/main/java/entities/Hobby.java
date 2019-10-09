@@ -6,8 +6,8 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,12 +15,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author jobe
  */
 @Entity
+@NamedQuery(name = "Hobby.deleteAllRows", query = "DELETE from Hobby")
 public class Hobby implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,7 +34,7 @@ public class Hobby implements Serializable {
     
     @ManyToMany(cascade = { CascadeType.PERSIST })
     @JoinTable(name="PERSON_HOBBY") // Owning side
-    private List<Person> persons = new ArrayList<>();
+    private Set<Person> persons = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -66,12 +68,11 @@ public class Hobby implements Serializable {
         this.description = description;
     }
 
-    public List<Person> getPersons() {
+    public Set<Person> getPersons() {
         return persons;
     }
 
     public void AddPerson(Person person) {
-        if (!persons.contains(person))
             persons.add(person);
     }
     

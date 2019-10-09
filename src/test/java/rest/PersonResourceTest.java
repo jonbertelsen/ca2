@@ -4,6 +4,7 @@ import dto.PersonDTO;
 import entities.Address;
 import entities.CityInfo;
 import entities.Person;
+import entities.Phone;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
@@ -67,7 +68,7 @@ public class PersonResourceTest {
 
     @BeforeEach
     public void setUp() {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = emf.createEntityManager();Phone phone = new Phone("121212", "Home number");
         CityInfo cityInfo = new CityInfo(2100, "Winterfell");
         CityInfo cityInfo2 = new CityInfo(3434, "Kings Landing");
         CityInfo cityInfo3 = new CityInfo(9898, "Qarth");
@@ -75,13 +76,18 @@ public class PersonResourceTest {
         Address address2 = new Address("Castle Street", "One arm dude", cityInfo2);
         Address address3 = new Address("Essos", "Mother of Dragons", cityInfo3);
         p1 = new Person("jonsnow@got.com", "Jon", "Snow", address);
+        p1.addPhone("123123", "Home number");
+        p1.addPhone("32432", "Business phone");
+        p1.addHobby("Drageflyvning", "På rigtige drager");
         p2 = new Person("jamiel@got.com","Jamie", "Lannister", address2);
         p3 = new Person("dragonmother@got.com", "Daenerys", "Targaryen", address3);
         try {
             em.getTransaction().begin();
+            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.createNamedQuery("Address.deleteAllRows").executeUpdate();
             em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
             em.persist(p1);
             em.persist(p2); 
             em.persist(p3);
@@ -128,7 +134,7 @@ public class PersonResourceTest {
                 .contentType("application/json")
                 .body("all.firstName", hasItems("Jon","Jamie","Daenerys") )
                 .extract().response();
-        //System.out.println(response.asString());
+        System.out.println(response.asString());
             
     }
     
