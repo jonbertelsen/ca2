@@ -1,11 +1,17 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 
 @Entity
@@ -16,10 +22,31 @@ public class Person implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String email;
+    private String firstName;
+    private String lastName;
+    
+    @ManyToOne(cascade = { CascadeType.PERSIST }) // Owning 
+    private Address address;
+    
+    @OneToMany(mappedBy="person", cascade = { CascadeType.PERSIST }) // Non owning side
+    private List<Phone> phoneList;
+    
+    @ManyToMany(mappedBy="persons", cascade = { CascadeType.PERSIST }) // Non Owning side
+    private List<Hobby> hobbies;
     
     public Person() {
     }
-        
+
+    public Person(String email, String firstName, String lastName, Address address) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phoneList = new ArrayList<Phone>();
+        this.hobbies = new ArrayList<Hobby>();
+    }
+    
     public Long getId() {
         return id;
     }
@@ -27,35 +54,67 @@ public class Person implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public List<Phone> getPhoneList() {
+        return phoneList;
+    }
+
+    public void setPhoneList(List<Phone> phoneList) {
+        this.phoneList = phoneList;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void addAddress(Address address) {
+        this.address = address;
+        address.addPerson(this);
+
+    }
     
-    // TODO, delete this class, or rename to an Entity class that makes sense for what you are about to do
-    // Delete EVERYTHING below if you decide to use this class, it's dummy data used for the initial demo
-    private String dummyStr1;
-    private String dummyStr2;
-
-    public Person(String dummyStr1, String dummyStr2) {
-        this.dummyStr1 = dummyStr1;
-        this.dummyStr2 = dummyStr2;
+    public void addPhone(String number, String description){
+        Phone newNumber = new Phone(number, description);
+        if (!phoneList.contains(newNumber)){
+            this.phoneList.add(newNumber);
+            newNumber.setPerson(this);
+        }
     }
 
-    public String getDummyStr1() {
-        return dummyStr1;
+    public void addHobby(String name, String description){
+        Hobby newHobby = new Hobby(name, description);
+        if (!hobbies.contains(newHobby)){
+            this.hobbies.add(newHobby);
+            newHobby.AddPerson(this);
+        }
     }
 
-    public void setDummyStr1(String dummyStr1) {
-        this.dummyStr1 = dummyStr1;
+    public List<Hobby> getHobbies() {
+        return hobbies;
     }
-
-    public String getDummyStr2() {
-        return dummyStr2;
-    }
-
-    public void setDummyStr2(String dummyStr2) {
-        this.dummyStr2 = dummyStr2;
-    }
-    
-    
-    
-
    
 }

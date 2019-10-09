@@ -1,7 +1,9 @@
 package facades;
 
-import utils.EMF_Creator;
+import entities.Address;
+import entities.CityInfo;
 import entities.Person;
+import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
@@ -10,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import utils.Settings;
 import utils.EMF_Creator.DbSelector;
 import utils.EMF_Creator.Strategy;
 
@@ -20,6 +21,7 @@ public class PersonFacadeTest {
 
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
+    private static Person p1, p2;
 
     public PersonFacadeTest() {
     }
@@ -57,14 +59,21 @@ public class PersonFacadeTest {
     @BeforeEach
     public void setUp() {
         EntityManager em = emf.createEntityManager();
+        CityInfo cityInfo = new CityInfo(2100, "Winterfell");
+        CityInfo cityInfo2 = new CityInfo(3434, "Kings Landing");
+        Address address = new Address("Dirty row", "General bad ass", cityInfo);
+        Address address2 = new Address("Castle Street", "One arm dude", cityInfo2);
+        p1 = new Person("jonsnow@got.com", "Jon", "Snow", address);
+        p2 = new Person("jamiel@got.com","Jamie", "Lannister", address2);
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-            em.persist(new Person("Some txt", "More text"));
-            em.persist(new Person("aaa", "bbb"));
-
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            em.persist(p1);
+            em.persist(p2); 
             em.getTransaction().commit();
-        } finally {
+        } finally { 
             em.close();
         }
     }

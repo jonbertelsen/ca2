@@ -2,7 +2,8 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import entities.Person;
+import dto.PersonDTO;
+import errorhandling.GenericExceptionMapper;
 import utils.EMF_Creator;
 import facades.PersonFacade;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -10,6 +11,9 @@ import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -39,8 +43,7 @@ import javax.ws.rs.core.MediaType;
                     @Server(
                             description = "Server API",
                             url = "https://cba.scenius.dk/ca2"
-                    )
-                          
+                    )           
             }
     )
 
@@ -48,7 +51,7 @@ public class PersonResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(
                 "pu",
-                "jdbc:mysql://localhost:3307/startcode",
+                "jdbc:mysql://localhost:3307/ca2",
                 "dev",
                 "ax2",
                 EMF_Creator.Strategy.CREATE);
@@ -62,10 +65,17 @@ public class PersonResource {
     }
     
     @GET
+    @Path("all")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getAllPersons() {
+        return GSON.toJson(FACADE.getAllPersons());
+    }
+    
+    @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)   
-    public Person getPersonById(@PathParam("id") int id) {
-         return new Person("Jon Snow","Winterfell");
+    public PersonDTO getPersonById(@PathParam("id") int id) {
+        return FACADE.addPerson("jonsnow@got.com", "Jon","Snow", "Winterfell", "General badass", 2100, "North");
     }
     
     @Path("count")
