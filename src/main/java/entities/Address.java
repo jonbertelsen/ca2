@@ -6,9 +6,7 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -35,10 +33,10 @@ public class Address implements Serializable {
     private String street;
     private String additionalInfo;
     
-    @ManyToOne(cascade = { CascadeType.PERSIST }) // Owning side
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }) // Owning side
     private CityInfo cityInfo;
 
-    @OneToMany (mappedBy="address", cascade = { CascadeType.PERSIST }) // Non owning side
+    @OneToMany (mappedBy="address", cascade = { CascadeType.PERSIST, CascadeType.MERGE }) // Non owning side
     private Set<Person> persons = new HashSet<Person>();
     
     public Long getId() {

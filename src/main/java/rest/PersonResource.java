@@ -22,8 +22,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-//Todo Remove or change relevant parts before ACTUAL use
-
 @Path("person")
 @OpenAPIDefinition(
             info = @Info(
@@ -50,7 +48,7 @@ import javax.ws.rs.core.MediaType;
 
 public class PersonResource {
 
-    private static EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.TEST,EMF_Creator.Strategy.DROP_AND_CREATE);
+    private static EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV,EMF_Creator.Strategy.CREATE);
     private static final PersonFacade FACADE =  PersonFacade.getFacade(emf);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
             
@@ -97,5 +95,4 @@ public class PersonResource {
         return "{\"count\":"+count+"}";  //Done manually so no need for a DTO
     }
 
- 
 }

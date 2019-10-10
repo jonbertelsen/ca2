@@ -79,6 +79,7 @@ public class PersonResourceTest {
         p1.addPhone("123123", "Home number");
         p1.addPhone("32432", "Business phone");
         p1.addHobby("Drageflyvning", "På rigtige drager");
+        p1.addHobby("Bueskydning", "Efter dværge");
         p2 = new Person("jamiel@got.com","Jamie", "Lannister", address2);
         p3 = new Person("dragonmother@got.com", "Daenerys", "Targaryen", address3);
         try {

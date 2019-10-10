@@ -1,5 +1,6 @@
 package facades;
 
+import dto.PersonDTO;
 import entities.Address;
 import entities.CityInfo;
 import entities.Person;
@@ -48,7 +49,7 @@ public class PersonFacadeTest {
         CityInfo cityInfo3 = new CityInfo(9898, "Qarth");
         Address address = new Address("Dirty row", "General bad ass", cityInfo);
         Address address2 = new Address("Castle Street", "One arm dude", cityInfo2);
-        Address address3 = new Address("Essos", "Mother of Dragons", cityInfo3);
+        Address address3 = new Address("Essos", "Mother of Dragons", cityInfo2);
         p1 = new Person("jonsnow@got.com", "Jon", "Snow", address);
         p2 = new Person("jamiel@got.com","Jamie", "Lannister", address2);
         p3 = new Person("dragonmother@got.com", "Daenerys", "Targaryen", address3);
@@ -75,6 +76,15 @@ public class PersonFacadeTest {
     @Test
     public void testAFacadeMethod() {
         assertEquals(3, facade.getPersonCount(), "Expects 3 rows in the database");
+    }
+    
+    @Test
+    public void testAddPerson(){       
+        PersonDTO pDTO = facade.addPerson("jon@test.dk", "Jon", "Bertelsen", "Gaden 1", "Ekstra info", 2100, "Winterfell");
+        pDTO = facade.addPerson("bob@marley.dk", "Bob", "Hund", "Dirty row", "General bad ass", 7777, "Aarhus");
+        assertEquals(5, facade.getPersonCount(), "Expects 5 rows in the database");
+ 
+    
     }
 
 }

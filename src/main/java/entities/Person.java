@@ -27,7 +27,7 @@ public class Person implements Serializable {
     private String firstName;
     private String lastName;
     
-    @ManyToOne(cascade = { CascadeType.PERSIST }) // Owning 
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE}) // Owning 
     private Address address;
     
     @OneToMany(mappedBy="person", cascade = { CascadeType.PERSIST }) // Non owning side

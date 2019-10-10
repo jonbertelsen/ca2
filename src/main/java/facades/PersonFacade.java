@@ -8,6 +8,7 @@ import entities.Person;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 
 
 public class PersonFacade {
@@ -48,12 +49,38 @@ public class PersonFacade {
     
     public PersonDTO addPerson(String email, String firstName, String lastName, String street, String additionalInfo, int zipCode, String city){
         EntityManager em = emf.createEntityManager();
-        CityInfo cityInfo = new CityInfo(zipCode, city);
-        Address address = new Address(street, additionalInfo, cityInfo);
-        Person person = new Person(email, firstName, lastName, address);
         try {
             em.getTransaction().begin();
-            em.persist(person);
+            
+                Query query;
+                
+                // Check if cityInfo already exists to avoid duplicates:
+                query = em.createQuery("SELECT c FROM CityInfo c WHERE c.zipCode = :zip AND c.city = :city", CityInfo.class);
+                query.setParameter("zip", zipCode);
+                query.setParameter("city", city);
+                List<CityInfo> ciList = query.getResultList();
+                CityInfo cityInfo;
+                if (ciList.size() > 0){
+                    cityInfo = ciList.get(0);  // zip+city already exist so now cityInfo is managed by JPA
+                } else {
+                    cityInfo = new CityInfo(zipCode, city);
+                }
+                
+                // Check if address already exists to avoid duplicates
+                query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.additionalInfo = :additional", Address.class);
+                query.setParameter("street", street);
+                query.setParameter("additional", additionalInfo);
+                List<Address> aList = query.getResultList();
+                Address address;
+                if (aList.size() > 0){
+                    address = aList.get(0);  // street+addinfo already exist so now address is managed by JPA
+                    address.setCityInfo(cityInfo);   // Remember to set this guy
+                } else {
+                    address = new Address(street, additionalInfo, cityInfo);
+                }
+                
+                Person person = new Person(email, firstName, lastName, address);
+                em.persist(person);
             em.getTransaction().commit();
             return new PersonDTO(person);
         } finally {

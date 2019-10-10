@@ -10,6 +10,10 @@
     <class>entities.Hobby</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
+<!--
+<property name="eclipselink.logging.level.sql" value="FINEST"/>
+ <property name="eclipselink.logging.parameters" value="true"/>
+-->
       <!-- DO NOT remove the line below. It's not set by the  entityUtils.EMF_Creator -->
       <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
       <!-- The missing values are added by entityUtils.EMF_Creator -->

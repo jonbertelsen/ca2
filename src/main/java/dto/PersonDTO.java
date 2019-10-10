@@ -7,9 +7,7 @@ package dto;
 
 import entities.Person;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -28,7 +26,9 @@ public class PersonDTO {
     private String lastName;
     @Schema(required = true, example = "\"address\": {\"id\": 1,\"street\": \"Winterfell\",\"additionalInfo\": \"General badass\",\"zipCode\": 2100,\"city\": \"North\"}")
     private AddressDTO address;
+    @Schema(required = true, example = "{}")
     private Set<PhoneDTO> phoneList = new HashSet<>();
+    @Schema(required = true, example = "{}")
     private Set<HobbyDTO> hobbies = new HashSet<>();
     
     public PersonDTO(Person person){
